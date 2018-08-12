@@ -1,0 +1,144 @@
+const graphql = require('graphql');
+const {
+  GraphQLSchema,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLObjectType,
+  GraphQLID,
+  GraphQLList
+} = graphql;
+
+const AuthorModel = require('../models/author_model');
+const BookModel = require('../models/book_model');
+
+
+const BookType = new GraphQLObjectType({
+  name: 'Book',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    genre: { type: GraphQLString },
+    author: {
+      type: AuthorType,
+      resolve(parent, args) {
+        return AuthorModel.findById(parent.authorId)
+      }
+    }
+  })
+});
+
+const AuthorType = new GraphQLObjectType({
+  name: 'Author',
+  fields: () => ({
+    name: { type: GraphQLString },
+    age: { type: GraphQLInt },
+    id: { type: GraphQLID },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        return BookModel.find({ authorId: parent.id })
+      }
+    }
+  })
+})
+
+// dèine RootQueryType
+const RootQuery = new GraphQLObjectType({
+  name: 'RootQueryType',
+  fields: {
+    book: {
+      type: BookType,
+      args: { 
+        id: { type: GraphQLID }
+      },
+      resolve(parent, args) {
+        return BookModel.findById(args.id)
+      }
+    },
+    author: {
+      type: AuthorType,
+      args: {
+        id: { type: GraphQLID }
+      },
+      resolve(parent, args) {
+        return AuthorModel.findById(args.id)
+      }
+    },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        return BookModel.find({});
+      }
+    },
+    authors: {
+      type: new GraphQLList(AuthorType),
+      resolve(parent, args) {
+        return AuthorModel.find({ });
+      }
+    }
+  }
+})
+
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    // add author mutation
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt }
+      },
+      async resolve(parent, args) {
+        let newAuthor = new AuthorModel({
+          name: args.name,
+          age: args.age
+        });
+        await newAuthor.save();
+        return newAuthor;
+      }
+    },
+    // delete author mutation
+    deleteAuthor: {
+      type: AuthorType,
+      args: {
+        name: { type: GraphQLString }
+      },
+      async resolve(parent, args) {
+        try {
+          const deletedAuthor = await AuthorModel.findOneAndRemove({
+            name: args.name
+          });
+          return `${deletedAuthor.name} has been deleted`;
+        } catch(err) {
+          console.log(err)
+        }
+      }
+    },
+    addBook: {
+      type: BookType,
+      args: {
+        name: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        authorId: { type: GraphQLID }
+      },
+      async resolve(parent, { name, genre, authorId }) {
+        try {
+          const newBook = new BookModel({
+            name, genre, authorId
+          })
+          await newBook.save();
+          return newBook;
+        } catch(err) {
+          console.log(err)
+          }
+        }
+      }
+  }
+})
+
+
+module.exports = new GraphQLSchema({
+  query: RootQuery,
+  mutation: Mutation
+})
