@@ -1,0 +1,38 @@
+body {
+  background-color: rgb(238, 238, 238);
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.book-card {
+  border-radius: 5px;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-modal {
+  background-color: white;
+  width: 60%;
+  margin: 0 auto;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  border-radius: 5px;
+}
+
+.add-modal-form {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+
+h2 {
+  margin: 0;
+}

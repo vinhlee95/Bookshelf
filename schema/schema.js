@@ -49,19 +49,19 @@ const RootQuery = new GraphQLObjectType({
     book: {
       type: BookType,
       args: { 
-        id: { type: GraphQLID }
+        name: { type: GraphQLString }
       },
       resolve(parent, args) {
-        return BookModel.findById(args.id)
+        return BookModel.findOne({ name: args.name })
       }
     },
     author: {
       type: AuthorType,
       args: {
-        id: { type: GraphQLID }
+        name: { type: GraphQLString }
       },
       resolve(parent, args) {
-        return AuthorModel.findById(args.id)
+        return AuthorModel.findOne({ name: args.name })
       }
     },
     books: {
