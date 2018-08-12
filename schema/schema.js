@@ -82,39 +82,6 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    // add author mutation
-    addAuthor: {
-      type: AuthorType,
-      args: {
-        name: { type: GraphQLString },
-        age: { type: GraphQLInt }
-      },
-      async resolve(parent, args) {
-        let newAuthor = new AuthorModel({
-          name: args.name,
-          age: args.age
-        });
-        await newAuthor.save();
-        return newAuthor;
-      }
-    },
-    // delete author mutation
-    deleteAuthor: {
-      type: AuthorType,
-      args: {
-        name: { type: GraphQLString }
-      },
-      async resolve(parent, args) {
-        try {
-          const deletedAuthor = await AuthorModel.findOneAndRemove({
-            name: args.name
-          });
-          return `${deletedAuthor.name} has been deleted`;
-        } catch(err) {
-          console.log(err)
-        }
-      }
-    },
     addBook: {
       type: BookType,
       args: {
@@ -123,18 +90,18 @@ const Mutation = new GraphQLObjectType({
         authorName: { type: GraphQLString },
       },
       async resolve(parent, { name, genre, authorName }) {
-          // get authorId from author name
-          const author = await AuthorModel.findOne({ name: authorName });
-          const authorId = author.id;
-          // save new book to db
-          const newBook = new BookModel({
-            name, genre, authorId
-          });
-          await newBook.save();
-          // return data
-          return newBook;
-        }
+        // get authorId from author name
+        const author = await AuthorModel.findOne({ name: authorName });
+        const authorId = author.id;
+        // save new book to db
+        const newBook = new BookModel({
+          name, genre, authorId
+        });
+        await newBook.save();
+        // return data
+        return newBook;
       }
+    },
   }
 })
 

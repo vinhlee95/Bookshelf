@@ -2,7 +2,7 @@ body {
   background-color: rgb(238, 238, 238);
   width:80%;
 }
-.book-list {
+.book-list, .book-filter-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
