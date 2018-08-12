@@ -120,18 +120,19 @@ const Mutation = new GraphQLObjectType({
       args: {
         name: { type: GraphQLString },
         genre: { type: GraphQLString },
-        authorId: { type: GraphQLID }
+        authorName: { type: GraphQLString },
       },
-      async resolve(parent, { name, genre, authorId }) {
-        try {
+      async resolve(parent, { name, genre, authorName }) {
+          // get authorId from author name
+          const author = await AuthorModel.findOne({ name: authorName });
+          const authorId = author.id;
+          // save new book to db
           const newBook = new BookModel({
             name, genre, authorId
-          })
+          });
           await newBook.save();
+          // return data
           return newBook;
-        } catch(err) {
-          console.log(err)
-          }
         }
       }
   }

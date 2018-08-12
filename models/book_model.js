@@ -7,14 +7,6 @@ const bookSchema = new Schema({
   authorId: String
 })
 
-bookSchema.static.getBooks = function(name) {
-  return this.find({
-    name
-  })
-  .then(res => console.log(res))
-  .catch(err => console.log(err));
-}
-
 module.exports = mongoose.model('Book', bookSchema);
 
 
