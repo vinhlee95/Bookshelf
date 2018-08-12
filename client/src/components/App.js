@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { TextField } from '@material-ui/core';
+import {gql} from 'apollo-boost';
+import { graphql } from 'react-apollo';
+
 
 import BookList from './BookList';
 import Button from './UI/Button';
 import Modal from './UI/Modal';
+
+import getBooksQuery from './queries/getBooks';
 
 
 class App extends Component {
@@ -18,9 +23,23 @@ class App extends Component {
     });
   };
 
+  handleAddBook = () => {
+    const { bookName, genre, author } = this.state;
+    this.props.mutate({
+      variables: {
+        name: bookName,
+        genre,
+        authorName: author
+      },
+      refetchQueries: [{ query: getBooksQuery }]
+    }).then(() => {
+      this.setState({ showAddBookModal: false })
+      console.log(`Book named ${bookName} has been added to your list`)
+    }
+    );
+  }
 
   render() {
-    console.log(this.state)
     return (
       <div className="App">
         <h1>My books</h1>
@@ -79,4 +98,16 @@ class App extends Component {
   }
 }
 
-export default App;
+const mutation = gql`
+  mutation AddBook($name: String, $genre: String, $authorName: String) {
+    addBook(name: $name, genre: $genre, authorName: $authorName) {
+      name
+      genre
+      author {
+        name
+      }
+    }
+  }
+`;
+
+export default graphql(mutation)(App);
