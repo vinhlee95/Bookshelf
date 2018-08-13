@@ -22,16 +22,16 @@ body {
 
 .add-modal {
   background-color: white;
-  width: 60%;
+  width: 50%;
   margin: 0 auto;
   position: absolute;
   top: 20%;
-  left: 20%;
-  border-radius: 5px;
+  left: 25%;
+  border-radius: 10px;
 }
 
 .add-modal-form {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   padding: 20px 0;
 }
