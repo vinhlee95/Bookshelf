@@ -9,7 +9,7 @@ body {
 }
 
 .card {
-  height: 220px;
+  min-height: 150px;
   display: flex; flex-direction: column;justify-content: space-between;
   padding: 10px 10px;
 }
@@ -17,6 +17,7 @@ body {
 .button {
   display: flex;
   justify-content: flex-end;
+  margin-top: 50px;
 }
 
 .add-modal {
