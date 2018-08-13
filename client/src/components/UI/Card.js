@@ -21,7 +21,8 @@ const SimpleCard = (props) => {
               variant="fab" 
               color='secondary' 
               aria-label="Delete"
-              style={{ height: 40, width: 40 }} >
+              style={{ height: 40, width: 40 }}
+              onClick={props.onClick} >
               <DeleteIcon />
             </Button>
           </div>

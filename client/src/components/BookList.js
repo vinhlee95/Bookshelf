@@ -18,6 +18,7 @@ class BookList extends Component {
                           style={{
                             height: 200, width: 200
                           }}
+                          onClick={() => console.log(book.id)}
                         />
                       )
                     })

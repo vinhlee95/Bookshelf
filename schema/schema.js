@@ -102,6 +102,15 @@ const Mutation = new GraphQLObjectType({
         return newBook;
       }
     },
+    deleteBook: {
+      type: BookType,
+      args: {
+        id: { type: GraphQLString }
+      },
+      async resolve(parent, { id }) {
+        await BookModel.findByIdAndRemove(id, () => console.log(`Book with id ${id} has been deleted`));
+      }
+    }
   }
 })
 
