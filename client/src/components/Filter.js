@@ -68,12 +68,6 @@ class Filter extends Component {
                   </div>
 
                 }
-                {
-                  !data.data.author && this.state.filtering
-                  ?
-                  <p>Loading...</p>
-                  : null
-                }
               </div>
             )
           }}

@@ -15,6 +15,9 @@ class BookList extends Component {
                           genre={book.genre}
                           authorName={book.author.name}
                           className='book-card'
+                          style={{
+                            height: 200, width: 200
+                          }}
                         />
                       )
                     })
