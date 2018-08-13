@@ -91,8 +91,16 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, { name, genre, authorName }) {
         // get authorId from author name
-        const author = await AuthorModel.findOne({ name: authorName });
+        let author = await AuthorModel.findOne({ name: authorName });
+        // if this is a new author, create new author and return author id
+        if(!author) {
+          author = new AuthorModel({
+            name: authorName
+          });
+          await author.save();
+        }
         const authorId = author.id;
+        console.log(authorId)
         // save new book to db
         const newBook = new BookModel({
           name, genre, authorId
@@ -105,10 +113,10 @@ const Mutation = new GraphQLObjectType({
     deleteBook: {
       type: BookType,
       args: {
-        id: { type: GraphQLString }
+        id: { type: GraphQLID }
       },
       async resolve(parent, { id }) {
-        await BookModel.findByIdAndRemove(id, () => console.log(`Book with id ${id} has been deleted`));
+        await BookModel.findByIdAndRemove(id);
       }
     }
   }

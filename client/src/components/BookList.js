@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
+import { gql } from 'apollo-boost';
 import Card from './UI/Card';
 import getBooksQuery from './queries/getBooks';
 
 class BookList extends Component {
+
+  handleDeleteBook = (id) => {
+    this.props.mutate({
+      variables: {
+        id 
+      },
+      refetchQueries: [{ query: getBooksQuery }],
+    }).then(() => console.log(`Book with id ${id} has been deleted`));
+  }
+
   render() {
     const { data } = this.props;
     let bookList = data.books ?
@@ -18,7 +29,7 @@ class BookList extends Component {
                           style={{
                             height: 200, width: 200
                           }}
-                          onClick={() => console.log(book.id)}
+                          onClick={() => this.handleDeleteBook(book.id)}
                         />
                       )
                     })
@@ -33,5 +44,13 @@ class BookList extends Component {
   }
 }
 
+const mutation = gql`
+  mutation DeleteBook($id: ID) {
+    deleteBook(id: $id) {
+      id
+    }
+  }
+`
 
-export default graphql(getBooksQuery)(BookList);
+
+export default compose(graphql(getBooksQuery),graphql(mutation))(BookList);

@@ -15,7 +15,7 @@ const SimpleCard = (props) => {
           <div style={styles.bottomContainer}>
             <div>
             <p>{props.genre}</p>
-            <p style={{ marginBottom: 0 }}>{props.authorName}</p>
+            <p style={{ marginBottom: 0, fontWeight: 'bold' }}>{props.authorName}</p>
             </div>
             <Button 
               variant="fab" 
