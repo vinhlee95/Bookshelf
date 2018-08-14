@@ -76,6 +76,7 @@ class App extends Component {
           <Modal 
             open={this.state.showAddBookModal}
             handleCloseModal={() => this.setState({ showAddBookModal: false })}
+            className='add-modal'
           >
             <h2>Add books</h2>
               <TextField

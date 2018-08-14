@@ -7,15 +7,18 @@ class SimpleModal extends React.Component {
     return (
       <div>
         <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
           open={this.props.open}
           onClose={this.props.handleCloseModal}
+          className='book-card-container'
         >
-          <div className='add-modal'>
-            <form className='add-modal-form'>
+          <div 
+            className={this.props.className}
+            style={{
+              backgroundColor: 'white',
+            }} >
+            <div className='modal-content'>
               {this.props.children}
-            </form>
+            </div>
           </div>
         </Modal>
       </div>

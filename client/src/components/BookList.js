@@ -71,10 +71,6 @@ class BookList extends Component {
                               bookName={book.name}
                               genre={book.genre}
                               authorName={book.author.name}
-                              className='book-card'
-                              style={{
-                                height: 200, width: 200
-                              }}
                               onClick={(e) => this.handleDeleteBook(e,book.id, book.name)}
                             />
                           </div>
@@ -120,7 +116,7 @@ class BookList extends Component {
                     console.log(books)
                     if(_.isEmpty(books)) {
                       return (
-                        <p>There is no book written by {this.state.selectedBook.author} in your collection.</p>
+                        <p>This is the only book written by {this.state.selectedBook.author} in your collection.</p>
                       )
                     }
                     return(
