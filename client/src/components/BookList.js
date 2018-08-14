@@ -1,7 +1,7 @@
 import React, { Component,  } from 'react';
 import { graphql, compose } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { Tooltip, Zoom } from '@material-ui/core';
+import { Tooltip, Zoom, Snackbar } from '@material-ui/core';
 import { Query } from "react-apollo";
 
 import _ from 'lodash';
@@ -14,7 +14,7 @@ import filterBookByAuthor from './queries/filterBooksByAuthor';
 
 class BookList extends Component {
   state = {
-    showInfoModal: false,
+    showInfoModal: false, showSnackbar: false, snackbarMessage: '',
     selectedBook: {
     }
   }
@@ -30,14 +30,23 @@ class BookList extends Component {
   }
 
 
-  handleDeleteBook = (e,id) => {
+  handleDeleteBook = (e,id, name) => {
     e.stopPropagation();
     this.props.mutate({
       variables: {
         id 
       },
       refetchQueries: [{ query: getBooksQuery }],
-    }).then(() => console.log(`Book with id ${id} has been deleted`));
+    }).then(() => {
+      this.setState({
+        showSnackbar: true,
+        snackbarMessage: `${name} has been removed from your collection.`
+      })
+    });
+  }
+
+  hideSnackbar = () => {
+    this.setState({ showSnackbar: false })
   }
 
   render() {
@@ -66,7 +75,7 @@ class BookList extends Component {
                               style={{
                                 height: 200, width: 200
                               }}
-                              onClick={(e) => this.handleDeleteBook(e,book.id)}
+                              onClick={(e) => this.handleDeleteBook(e,book.id, book.name)}
                             />
                           </div>
                         </Tooltip>
@@ -139,6 +148,12 @@ class BookList extends Component {
           </Modal>
           : null
         }
+        <Snackbar
+          open={this.state.showSnackbar}
+          message={<span>{this.state.snackbarMessage}</span>}
+          onClose={this.hideSnackbar}
+          autoHideDuration={2000}
+        />
       </div>
     )
   }

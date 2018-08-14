@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, Snackbar } from '@material-ui/core';
 import {gql} from 'apollo-boost';
 import { graphql } from 'react-apollo';
 
@@ -17,6 +17,7 @@ class App extends Component {
     showFilter: false, filterResultsShowed: false,
     showAddBookModal: false,
     bookName: '', genre: '', author: '',
+    showSnackbar: false, snackbarMessage: ''
   }
 
   handleChange = name => event => {
@@ -35,10 +36,16 @@ class App extends Component {
       },
       refetchQueries: [{ query: getBooksQuery }]
     }).then(() => {
-      this.setState({ showAddBookModal: false })
-      console.log(`Book named ${bookName} has been added to your list`)
+      this.setState({ 
+        showAddBookModal: false, 
+        showSnackbar: true, snackbarMessage: `${bookName} has been added to your collection.`
+      })
     }
     );
+  }
+
+  hideSnackbar = () => {
+    this.setState({ showSnackbar: false })
   }
 
   render() {
@@ -110,6 +117,12 @@ class App extends Component {
               />
           </Modal>
         </div>
+        <Snackbar
+          open={this.state.showSnackbar}
+          message={<span>{this.state.snackbarMessage}</span>}
+          onClose={this.hideSnackbar}
+          autoHideDuration={2000}
+        />
       </div>
     );
   }
