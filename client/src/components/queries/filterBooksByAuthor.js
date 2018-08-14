@@ -1,10 +1,10 @@
 import { gql } from 'apollo-boost';
 
 export default gql`
-  query FilterBooksByAuthor($name: String) {
+  query Author($name: String) {
     author(name: $name) {
-      name
-      books: {
+      books {
+        id
         name
         genre
       }

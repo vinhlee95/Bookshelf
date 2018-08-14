@@ -8,10 +8,29 @@ body {
   grid-gap: 20px;
 }
 
+.book-card-container {
+  cursor: pointer;
+}
+
 .card {
   min-height: 150px;
   display: flex; flex-direction: column;justify-content: space-between;
   padding: 10px 10px;
+}
+.related-book-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+}
+
+.related-book-card {
+  background-color: rgb(225, 236, 238);
+  border: .5px solid rgb(226, 224, 224);
+  padding: 10px 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .button {

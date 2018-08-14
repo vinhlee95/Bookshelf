@@ -1,10 +1,34 @@
-import React, { Component } from 'react';
+import React, { Component,  } from 'react';
 import { graphql, compose } from 'react-apollo';
 import { gql } from 'apollo-boost';
+import { Tooltip, Zoom } from '@material-ui/core';
+import { Query } from "react-apollo";
+
+import _ from 'lodash';
+
 import Card from './UI/Card';
+import Modal from './UI/Modal';
+
 import getBooksQuery from './queries/getBooks';
+import filterBookByAuthor from './queries/filterBooksByAuthor';
 
 class BookList extends Component {
+  state = {
+    showInfoModal: false,
+    selectedBook: {
+    }
+  }
+
+  handleSelectBook = (id, name, genre, author) => {
+    this.setState({
+      showInfoModal: true,
+      selectedBook: {
+        ...this.state.selectedBook,
+        id, name, genre, author
+      }
+    })
+  }
+
 
   handleDeleteBook = (id) => {
     this.props.mutate({
@@ -16,21 +40,35 @@ class BookList extends Component {
   }
 
   render() {
+    // get selected book info
+    const { id, name, genre, author } = this.state.selectedBook;
+    
+
     const { data } = this.props;
     let bookList = data.books ?
                     data.books.map(book => {
                       return(
-                        <Card
+                        <Tooltip 
                           key={book.id}
-                          bookName={book.name}
-                          genre={book.genre}
-                          authorName={book.author.name}
-                          className='book-card'
-                          style={{
-                            height: 200, width: 200
-                          }}
-                          onClick={() => this.handleDeleteBook(book.id)}
-                        />
+                          title='View book details' 
+                          placement='top'
+                          TransitionComponent={Zoom} >
+                          <div
+                            onClick={() => this.handleSelectBook(book.id, book.name, book.genre, book.author.name)}
+                            className='book-card-container'
+                          >
+                            <Card
+                              bookName={book.name}
+                              genre={book.genre}
+                              authorName={book.author.name}
+                              className='book-card'
+                              style={{
+                                height: 200, width: 200
+                              }}
+                              onClick={() => this.handleDeleteBook(book.id)}
+                            />
+                          </div>
+                        </Tooltip>
                       )
                     })
                     :
@@ -39,6 +77,62 @@ class BookList extends Component {
     return (
       <div className="book-list">
         {bookList}
+        {
+          this.state.showInfoModal
+          ?
+          <Modal
+            open={this.state.showInfoModal}
+            handleCloseModal={() => this.setState({ showInfoModal: false })}
+          >
+            <div>
+              <h2>{name}</h2>
+              <p>{genre}</p>
+              <p style={{ fontSize: 18, fontWeight: 'bold' }}>{author}</p>
+
+              {
+                this.state.selectedBook
+                ?
+                <Query query={filterBookByAuthor} variables={{ name: this.state.selectedBook.author}} >
+                  {(data, loading, error) => {
+                    if(loading) {
+                      return <p>Loading...</p>;
+                    }
+
+                    if(error) {
+                      return <p>Unexpected error occured</p>
+                    }
+                    const bookData = data.data; 
+                    let books = !_.isEmpty(bookData) 
+                                ? 
+                                bookData.author.books.filter(book => book.name !== this.state.selectedBook.name)
+                                : null
+                    console.log(books)
+                    return(
+                      <div className='related-book-container'>
+                        { books && books.map(book => {
+                          return(
+                            <div>
+                              <p style={{fontStyle: 'italic'}}>Also by {author}</p>
+                              <div 
+                                key={book.id}
+                                className='related-book-card' >
+                                <h3>{book.name}</h3>
+                                <p>{book.genre}</p>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )
+                  }}
+                </Query>
+                : null
+              }
+              
+            </div>
+          </Modal>
+          : null
+        }
       </div>
     )
   }
@@ -53,4 +147,9 @@ const mutation = gql`
 `
 
 
-export default compose(graphql(getBooksQuery),graphql(mutation))(BookList);
+
+
+export default compose(
+  graphql(getBooksQuery),
+  graphql(mutation))
+(BookList);
