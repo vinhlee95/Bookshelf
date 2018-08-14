@@ -30,7 +30,8 @@ class BookList extends Component {
   }
 
 
-  handleDeleteBook = (id) => {
+  handleDeleteBook = (e,id) => {
+    e.stopPropagation();
     this.props.mutate({
       variables: {
         id 
@@ -65,7 +66,7 @@ class BookList extends Component {
                               style={{
                                 height: 200, width: 200
                               }}
-                              onClick={() => this.handleDeleteBook(book.id)}
+                              onClick={(e) => this.handleDeleteBook(e,book.id)}
                             />
                           </div>
                         </Tooltip>
@@ -83,6 +84,7 @@ class BookList extends Component {
           <Modal
             open={this.state.showInfoModal}
             handleCloseModal={() => this.setState({ showInfoModal: false })}
+            className='book-detail-card'
           >
             <div>
               <h2>{name}</h2>
@@ -107,14 +109,18 @@ class BookList extends Component {
                                 bookData.author.books.filter(book => book.name !== this.state.selectedBook.name)
                                 : null
                     console.log(books)
+                    if(_.isEmpty(books)) {
+                      return (
+                        <p>There is no book written by {this.state.selectedBook.author} in your collection.</p>
+                      )
+                    }
                     return(
                       <div className='related-book-container'>
                         { books && books.map(book => {
                           return(
-                            <div>
+                            <div key={book.id}>
                               <p style={{fontStyle: 'italic'}}>Also by {author}</p>
                               <div 
-                                key={book.id}
                                 className='related-book-card' >
                                 <h3>{book.name}</h3>
                                 <p>{book.genre}</p>

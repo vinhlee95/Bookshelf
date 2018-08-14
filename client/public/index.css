@@ -17,6 +17,12 @@ body {
   display: flex; flex-direction: column;justify-content: space-between;
   padding: 10px 10px;
 }
+
+.book-detail-card {
+  width: 40%;
+  margin: 0 30%;
+}
+
 .related-book-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
