@@ -27,7 +27,7 @@ class App extends Component {
 
   handleAddBook = () => {
     const { bookName, genre, author } = this.state;
-    this.props.mutate({
+    this.props.addBook({
       variables: {
         name: bookName,
         genre,
@@ -115,7 +115,7 @@ class App extends Component {
   }
 }
 
-const mutation = gql`
+const addBookMutation = gql`
   mutation AddBook($name: String, $genre: String, $authorName: String) {
     addBook(name: $name, genre: $genre, authorName: $authorName) {
       name
@@ -127,4 +127,4 @@ const mutation = gql`
   }
 `;
 
-export default graphql(mutation)(App);
+export default graphql(addBookMutation, { name: "addBook" })(App);

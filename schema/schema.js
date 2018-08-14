@@ -42,6 +42,19 @@ const AuthorType = new GraphQLObjectType({
   })
 })
 
+const GenreType = new GraphQLObjectType({
+  name: 'Genre',
+  fields: () => ({
+    name: { type: GraphQLString },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        return BookModel.find({ genre: parent.name })
+      }
+    }
+  })
+})
+
 // dèine RootQueryType
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -62,6 +75,15 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parent, args) {
         return AuthorModel.findOne({ name: args.name })
+      }
+    },
+    genre: {
+      type: BookType,
+      args: {
+        name: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        return 
       }
     },
     books: {
@@ -118,7 +140,19 @@ const Mutation = new GraphQLObjectType({
       async resolve(parent, { id }) {
         await BookModel.findByIdAndRemove(id);
       }
-    }
+    },
+    // filterBookByGenre: {
+    //   type: BookType,
+    //   args: {
+    //     name: { type: GraphQLString }
+    //   },
+    //   async resolve(parent, { name }) {
+    //     BookModel.find({ genre: name }, (err, data) => {
+    //       return data;
+    //     });
+    //     return null;
+    //   }
+    // }
   }
 })
 

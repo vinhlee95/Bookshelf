@@ -4,10 +4,13 @@ const schema = require('./schema/schema');
 const keys = require('./configs/keys');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 app.use(cors());
+
+app.use(bodyParser.json());
 
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true })
         .then(() => console.log('Connected to mLab'))

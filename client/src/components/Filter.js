@@ -3,10 +3,11 @@ import { TextField } from '@material-ui/core';
 
 import {gql} from 'apollo-boost';
 import { Query } from "react-apollo";
+
 import Card from './UI/Card';
 
 
-const FILTER = gql`
+const FILTERBYAUTHOR = gql`
   query Author($name: String) {
     author(name: $name) {
       books {
@@ -18,9 +19,10 @@ const FILTER = gql`
 `;
 
 
+
 class Filter extends Component {
   state = {
-    authorName: '', filtering: false
+    authorName: '', genre: '',filtering: false
   }
 
   handleChange = (e) => {
@@ -28,7 +30,7 @@ class Filter extends Component {
   }
 
   render() {
-    const { authorName, loading } = this.state;
+    const { authorName, genre, loading } = this.state;
 
     return (
       <div>
@@ -37,9 +39,11 @@ class Filter extends Component {
           placeholder="Type author's name"
           value={this.state.filterAuthorName}
           onChange={e => this.handleChange(e)}
-          style={{ width: '50%', marginBottom: 20 }}
+          style={{ width: '60%', marginBottom: 20 }}
         />
-        <Query query={FILTER} variables={{ name: authorName}} >
+
+       
+        <Query query={FILTERBYAUTHOR} variables={{ name: authorName}} >
           {(data, loading, error) => {
             if(loading) {
               return <p>Loading...</p>;
@@ -48,7 +52,7 @@ class Filter extends Component {
             if(error) {
               return <p>Unexpected error occured</p>
             }
-            console.log(data.data.author)
+            // console.log(data.data.author)
             return(
               <div>
                 {
