@@ -122,19 +122,20 @@ class BookList extends Component {
                       )
                     }
                     return(
-                      <div className='related-book-container'>
-                        { books && books.map(book => {
-                          return(
-                            <div key={book.id}>
-                              <p style={{fontStyle: 'italic'}}>Also by {author}</p>
+                      <div>
+                        <p style={{fontStyle: 'italic'}}>Also by {author}</p>
+                        <div className='related-book-container'>
+                          { books && books.map(book => {
+                            return(
                               <div 
-                                className='related-book-card' >
+                                className='related-book-card'
+                                key={book.id} >
                                 <h3>{book.name}</h3>
                                 <p>{book.genre}</p>
                               </div>
-                            </div>
-                          )
-                        })}
+                            )
+                          })}
+                        </div>
                       </div>
                     )
                   }}
