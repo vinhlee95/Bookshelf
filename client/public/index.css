@@ -29,9 +29,9 @@ body {
   margin: 0 auto;
   position: absolute;
   top: 20%;
-  left: 25%;
+  left: 20%;
   border-radius: 10px;
-  width: 40%;
+  width: 60%;
 }
 
 .related-book-container {
@@ -53,6 +53,8 @@ body {
 .button {
   display: flex;
   justify-content: flex-end;
+  position: fixed;
+  bottom: 20px; right: 50px;
 }
 
 .add-modal {

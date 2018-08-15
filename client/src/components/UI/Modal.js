@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from '@material-ui/core/Modal';
+import {Modal, Slide} from '@material-ui/core';
 
 class SimpleModal extends React.Component {
 
@@ -11,15 +11,20 @@ class SimpleModal extends React.Component {
           onClose={this.props.handleCloseModal}
           style={this.props.style}
         >
-          <div 
-            className={this.props.className}
-            style={{
-              backgroundColor: 'white',
-            }} >
-            <div className='modal-content'>
-              {this.props.children}
+          <Slide
+            in={this.props.open}
+            direction='up'
+          >
+            <div 
+              className={this.props.className}
+              style={{
+                backgroundColor: 'white',
+              }} >
+              <div className='modal-content'>
+                {this.props.children}
+              </div>
             </div>
-          </div>
+          </Slide>
         </Modal>
       </div>
     );
