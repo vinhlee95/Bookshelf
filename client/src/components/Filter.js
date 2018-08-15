@@ -64,7 +64,7 @@ class Filter extends Component {
                             key={book.id}
                             bookName={book.name}
                             genre={book.genre}
-                            className="book-card"
+                            className="book-filter-card"
                           />
                         )
                       })
