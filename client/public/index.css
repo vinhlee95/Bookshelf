@@ -1,3 +1,11 @@
+:root {
+  /* define modal width */
+  --modal-width-mobile: 90%; --modal-left-mobile: 5%;
+  --modal-width-tablet: 60%; --modal-left-tablet: 20%;
+  --modal-width-destop: 40%; --modal-left-desktop: 30%;
+
+}
+
 body {
   background-color: rgb(238, 238, 238);
   width: 90%;
@@ -10,7 +18,6 @@ body {
 
 .book-card-container {
   cursor: pointer;
-  max-height: 300px;
   flex: 1;
   margin-bottom: 15px;
 }
@@ -26,7 +33,8 @@ body {
 .book-detail-card {
   margin: 0 auto;
   position: absolute;
-  top: 10%;
+  /* this need to be changed in smaller devices */
+  top: 20%; 
   left: 5%;
   border-radius: 10px;
   width: 90%;
@@ -69,8 +77,8 @@ body {
   margin: 0 auto;
   position: absolute;
   top: 20%;
-  left: 5%;
-  width: 90%;
+  left: var(--modal-left-mobile);
+  width: var(--modal-width-mobile);
   border-radius: 10px;
 }
 
@@ -94,7 +102,8 @@ h2 {
     margin: 15px 30px 15px 0;
   }
   .book-detail-card {
-    width: 60%; left: 20%;
+    width: var(--modal-width-tablet);
+    left: var(--modal-left-tablet);
   }
 }
 
@@ -105,12 +114,9 @@ h2 {
   .book-card-container {
     margin: 15px 30px 15px 0;
   }
-  .book-detail-card {
-    width: 50%; left: 25%;
-  }
-  .add-modal {
-    width: 60%;
-    left: 20%;
+  .book-detail-card, .add-modal {
+    width: var(--modal-width-tablet);
+    left: var(--modal-left-tablet);
   }
 }
 
@@ -121,12 +127,8 @@ h2 {
   .book-card-container {
     margin: 15px 30px 15px 0;
   }
-  .book-detail-card {
-    width: 40%;
-    left: 30%;
-  }
-  .add-modal {
-    width: 40%;
-    left: 30%;
+  .book-detail-card, .add-modal {
+    width: var(--modal-width-destop);
+    left: var(--modal-left-desktop);
   }
 }
