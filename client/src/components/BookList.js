@@ -72,6 +72,7 @@ class BookList extends Component {
                               genre={book.genre}
                               authorName={book.author.name}
                               onClick={(e) => this.handleDeleteBook(e,book.id, book.name)}
+                              className='main-book-card'
                             />
                           </div>
                         </Tooltip>
@@ -82,6 +83,7 @@ class BookList extends Component {
                     
     return (
       <div className="book-list">
+        
         {bookList}
         {
           this.state.showInfoModal

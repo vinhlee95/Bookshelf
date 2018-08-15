@@ -1,32 +1,37 @@
 body {
   background-color: rgb(238, 238, 238);
   width: 90%;
+  margin: 0 auto;
 }
 .book-list, .book-filter-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .book-card-container {
   cursor: pointer;
-  min-height: 150px;
+  max-height: 200px;
+  min-width: 250px;
+  max-width: 250px;
+  flex: 1;
+  margin-bottom: 15px;
 }
 
 
-.card {
+.main-book-card {
   display: flex; flex-direction: column;justify-content: space-between;
   padding: 10px 10px;
   min-height: 150px;
 }
 
 .book-detail-card {
-  width: 50%;
   margin: 0 auto;
   position: absolute;
   top: 20%;
   left: 25%;
   border-radius: 10px;
+  width: 40%;
 }
 
 .related-book-container {
@@ -48,15 +53,14 @@ body {
 .button {
   display: flex;
   justify-content: flex-end;
-  margin-top: 50px;
 }
 
 .add-modal {
-  width: 50%;
   margin: 0 auto;
   position: absolute;
   top: 20%;
   left: 25%;
+  width: 50%;
   border-radius: 10px;
 }
 
@@ -72,14 +76,30 @@ h2 {
 }
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (min-width: 480px) and (max-width: 768px) {
   .book-list, .book-filter-container {
-    grid-template-columns: repeat(2, 1fr);
+    flex-direction: row;
+  }
+  .book-card-container {
+    margin: 15px 30px 15px 0;
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
   .book-list, .book-filter-container {
-    grid-template-columns: repeat(3, 1fr);
+    flex-direction: row;
+  }
+  .book-card-container {
+    margin: 15px 30px 15px 0;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .book-list, .book-filter-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .book-card-container {
+    margin: 15px 30px 15px 0;
   }
 }

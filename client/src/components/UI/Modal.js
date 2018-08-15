@@ -9,7 +9,7 @@ class SimpleModal extends React.Component {
         <Modal
           open={this.props.open}
           onClose={this.props.handleCloseModal}
-          className='book-card-container'
+          style={this.props.style}
         >
           <div 
             className={this.props.className}

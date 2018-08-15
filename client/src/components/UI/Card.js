@@ -10,7 +10,7 @@ const styles = {
 
 const SimpleCard = (props) => {
   return (
-      <Card className='card'>
+      <Card className={props.className}>
           <h2> {props.bookName}</h2>
           <div style={styles.bottomContainer}>
             <div>
